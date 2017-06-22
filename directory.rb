@@ -12,17 +12,17 @@ def input_students
 end
 
 def print_header
-  puts "The students of Villains Academy beginning with A"
+  puts "The students of Villains Academy with less than 12 letters in name"
   puts "-------------"
 end
 
 def print(students)
     students.each_with_index do |student, index|
-      if student[:name][0] == ("A" || "a")
+      if student[:name].length < 12
         puts "#{index+1}: #{student[:name]} (#{student[:cohort]} cohort)"
       end
     end
-  end 
+  end
 
 def print_footer(students)
   puts "Overall, we have #{students.count} great students"
