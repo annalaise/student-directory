@@ -1,11 +1,15 @@
 def input_students
-  puts "Please enter the names of the students"
-  puts "To finish, just hit return twice"
+  puts "Please enter the name of the student"
   students = []
   name = gets.chomp
   while !name.empty? do
-    students << {name: name, cohort: :november}
+    puts "What is the student's nationality?"
+    nationality = gets.chomp
+    puts "What is the student's current age?"
+    age = gets.chomp
+    students << {name: name, cohort: :november, nationality: nationality, age: age}
     puts "Now we have #{students.count} students"
+    puts "Enter another student, or hit return to finish"
     name = gets.chomp
   end
   students
@@ -17,12 +21,12 @@ def print_header
 end
 
 def print(students)
-index = 0
-  while students.length > index
-        puts "#{index+1}: #{students[index][:name]} (#{students[index][:cohort]} cohort)"
-        index += 1
-      end
+  count = 0
+  while count < students.count
+    puts "#{count+1}. #{students[count][:name]} (#{students[:cohort]} cohort) Age:#{students[count][:age]} MBTI profile#{students[count][:mbti]} Nationality:#{students[count][:nationality]}"
+    count += 1
   end
+end
 
 def print_footer(students)
   puts "Overall, we have #{students.count} great students"
