@@ -12,16 +12,17 @@ def input_students
 end
 
 def print_header
-  puts "The students of Villains Academy"
+  puts "The students of Villains Academy beginning with A"
   puts "-------------"
 end
 
 def print(students)
-  students.each_with_index do |student, index|
-  indexplusone = index + 1
-   puts "#{indexplusone}. #{student[:name]} (#{student[:cohort]} cohort)"
-  end
-end
+    students.each_with_index do |student, index|
+      if student[:name][0] == ("A" || "a")
+        puts "#{index+1}: #{student[:name]} (#{student[:cohort]} cohort)"
+      end
+    end
+  end 
 
 def print_footer(students)
   puts "Overall, we have #{students.count} great students"
