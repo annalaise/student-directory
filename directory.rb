@@ -12,16 +12,16 @@ def input_students
 end
 
 def print_header
-  puts "The students of Villains Academy with less than 12 letters in name"
+  puts "The students of Villains Academy"
   puts "-------------"
 end
 
 def print(students)
-    students.each_with_index do |student, index|
-      if student[:name].length < 12
-        puts "#{index+1}: #{student[:name]} (#{student[:cohort]} cohort)"
+index = 0
+  while students.length > index
+        puts "#{index+1}: #{students[index][:name]} (#{students[index][:cohort]} cohort)"
+        index += 1
       end
-    end
   end
 
 def print_footer(students)
