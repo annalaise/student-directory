@@ -23,7 +23,7 @@ end
 def print(students)
   count = 0
   while count < students.count
-    puts "#{count+1}. #{students[count][:name]} (#{students[:cohort]} cohort) Age:#{students[count][:age]} MBTI profile#{students[count][:mbti]} Nationality:#{students[count][:nationality]}"
+    puts "#{count+1}. #{students[count][:name]} (#{students[:cohort]} cohort) Age:#{students[count][:age]} Nationality:#{students[count][:nationality]}"
     count += 1
   end
 end
