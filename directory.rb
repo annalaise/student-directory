@@ -16,23 +16,20 @@ def input_students
 end
 
 def print_header
-  line1 = "The students of Villains Academy"
-  line2 = "-------------"
-  puts line1.center(20)
-  puts line2.center(20)
+  puts "The students of Villains Academy"
+  puts "-------------"
 end
 
 def print(students)
     students.each_with_index do |student, i|
       if student.class == Hash
-        puts "#{i+1}. #{students[i][:name]} (#{students[i][:cohort]} cohort) Age: #{students[i][:age]} Nationality: #{students[i][:nat]}"
+      puts "#{(i+1)}. #{(students[i][:name]).rjust(15)} (#{students[i][:cohort]} cohort) Age: #{students[i][:age]} Nationality: #{students[i][:nat]}"
       end
   end
 end
 
 def print_footer(students)
-  footer = "Overall, we have #{students.count} great students"
-  puts footer.center(20)
+  puts "Overall, we have #{students.count} great students"
 end
 
 students = input_students
