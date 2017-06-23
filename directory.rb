@@ -6,13 +6,29 @@ end
 def input_students
   center_puts("Please enter the name of the student")
   students = []
+  cohort_month = [:january, :february, :march, :april, :may, :june, :july, :august, :september, :october, :november, :december]
   name = gets.chomp
+  cohort = nil
+
   while !name.empty? do
+
+    until cohort_month.include? cohort do
+       default_cohort = :undecided
+       center_puts("Which cohort is #{name} on?")
+       cohort = gets.chomp.downcase.to_sym
+       cohort ||= default_cohort
+       center_puts("That cohort isn't valid. Enter a month, e.g. july, or hit enter again to select #{default_cohort}.") if !cohort_month.include? cohort
+      end
+
     center_puts("Where is #{name} from?")
     country = gets.chomp
+
     center_puts("How old is #{name}?")
     age = gets.chomp
-    students << {name: name.capitalize, cohort: :november, country: country.capitalize, age: age}
+
+    students << {name: name.capitalize, cohort: cohort.capitalize, country: country.capitalize, age: age}
+    cohort = nil
+    
     center_puts("Now we have #{students.count} students")
     center_puts("Enter another student, or hit return to finish")
     name = gets.chomp
@@ -28,7 +44,7 @@ end
 def print(students)
     students.each_with_index do |student, i|
       if student.class == Hash
-      center_puts("#{(i+1)}. #{(students[i][:name])} (#{students[i][:cohort]} cohort) Age: #{students[i][:age]} Country: #{students[i][:country]}")
+      center_puts("#{(i+1)}. #{(students[i][:name])} (#{students[i][:cohort]} Cohort) Age: #{students[i][:age]} Country: #{students[i][:country]}")
       end
   end
 end
