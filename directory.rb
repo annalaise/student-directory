@@ -28,8 +28,13 @@ def input_students
 
     students << {name: name.capitalize, cohort: cohort.capitalize, country: country.capitalize, age: age}
     cohort = nil
-    
+
+    if students.count > 1
     center_puts("Now we have #{students.count} students")
+    else
+      center_puts("Now we have #{students.count} student")
+    end
+
     center_puts("Enter another student, or hit return to finish")
     name = gets.chomp
   end
@@ -50,7 +55,12 @@ def print(students)
 end
 
 def print_footer(students)
+  if students.count > 1
   center_puts("Overall, we have #{students.count} great students")
+  else
+    center_puts("Overall, we have #{students.count} great student")
+  end
+
 end
 
 students = input_students
