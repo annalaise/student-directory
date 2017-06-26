@@ -9,26 +9,31 @@ end
 
 # Collects student details from user
 def input_students
-  center_puts("Please enter the first and last name of the student")
+  puts "Please enter the first and last name of the student"
   students = []
-  name = name = gets.gsub(/\n/,"")
+  name = gets.gsub(/\n/,"")
+  cohort = nil
 
 # As long as name has been completed, do the following...
   while !name.empty? do
 
 # Collects the cohort month and prompts user for correct format if month is entered incorrectly
-    center_puts("Which cohort is #{name} on?")
-    cohort = gets.chomp.downcase.to_sym
-    break if COHORT_MONTH.include?(cohort)
-    center_puts("That cohort isn't valid. Enter a month name: ")
-    cohort = gets.chomp.downcase.to_sym
+    until COHORT_MONTH.include? cohort do
+      default = :july
+      puts "Which cohort is #{name} on?"
+      cohort = gets.chomp.downcase.to_sym
+      cohort ||= default
+      if !COHORT_MONTH.include? cohort
+      center_puts("That cohort isn't valid. Enter a month name:")
+      end
+    end
 
 # Collects where student is from
-    center_puts("Where is #{name} from?")
+    puts "Where is #{name} from?"
     country = gets.chomp
 
 # Collects student's age
-    center_puts("How old is #{name}?")
+    puts "How old is #{name}?"
     age = gets.chomp
 
 # Shovels collected student data into array of hashes
@@ -70,17 +75,18 @@ def print_footer(students)
 end
 
 # Student details for testing cohort month sorting
-students = [
-{name: "Darth Vadar", cohort: "july", country: "AGalaxyFarFarAway", age: 45},
-{name: "Dr. Hannibal Lecter", cohort: "august", country: "USA", age: 62},
-{name: "Nurse Ratchet", cohort: "july", country: "USA", age: 35},
-{name: "Lord Voldermort", cohort: "september", country: "UK", age: 56},
-{name: "Freddy Krueger", cohort: "august", country: "France", age: 43},
-{name: "The Joker", cohort: "september", country: "DeckofCards", age: 57},
-{name: "The Wicked Witch of the West", cohort: "november", age: 86}
-]
+# students = [
+# {name: "Darth Vadar", cohort: "july", country: "AGalaxyFarFarAway", age: 45},
+# {name: "Dr. Hannibal Lecter", cohort: "august", country: "USA", age: 62},
+# {name: "Nurse Ratchet", cohort: "july", country: "USA", age: 35},
+# {name: "Lord Voldermort", cohort: "september", country: "UK", age: 56},
+# {name: "Freddy Krueger", cohort: "august", country: "France", age: 43},
+# {name: "The Joker", cohort: "september", country: "DeckofCards", age: 57},
+# {name: "The Wicked Witch of the West", cohort: "november", age: 86}
+# ]
 
 # calls the methods for evaluation
+students = input_students
 print_header
 print_students(students)
 print_footer(students)
