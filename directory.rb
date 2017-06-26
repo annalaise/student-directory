@@ -7,6 +7,34 @@ def center_puts(string)
   puts string.center(width)
 end
 
+# Provides users with selection of choices for program to execute
+def interactive_menu
+  students = []
+  loop do
+    # 1. print the menu and ask the user what to do
+    puts "1. Enter new student details"
+    puts "2. Display existing student details"
+    puts "9. Exit"
+    # 2. read the input and save it into a variable
+    selection = gets.chomp
+    # 3. do what the user has asked
+    case selection
+      when "1"
+        # input the students
+        students = input_students
+      when "2"
+       # display the students
+       print_header(students)
+       print_students(students)
+       print_footer(students)
+     when "9"
+       exit # this will terminate the program
+     else
+       puts "I don't know what you mean, please try again"
+     end
+  end
+end
+
 # Collects student details from user
 def input_students
   puts "Please enter the first and last name of the student"
@@ -94,7 +122,4 @@ end
 # ]
 
 # calls the methods for evaluation
-students = input_students
-print_header(students)
-print_students(students)
-print_footer(students)
+interactive_menu
