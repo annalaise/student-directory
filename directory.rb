@@ -53,16 +53,24 @@ def input_students
   students
 end
 
-# Prints header for list of students
-def print_header
-  center_puts("The students of Villains Academy")
-  center_puts("-------------")
+# Prints header for list of students, only if student list is not empty
+def print_header(students)
+  if students.count > 0
+    center_puts("The students of Villains Academy")
+    center_puts("-------------")
+  else
+    exit
+  end
 end
 
-# Sorts students by cohort (alphabetically by month), puts the resulting modified array of hashes
+# Sorts students by cohort (alphabetically by month), puts the resulting modified array of hashes, only if student list is not empty
 def print_students(students)
-  cohorts = students.sort_by! {|student| student[:cohort] }
-  puts cohorts
+  if students.count > 0
+    cohorts = students.sort_by! {|student| student[:cohort] }
+    puts cohorts
+  else
+    exit
+  end
 end
 
 # prints the footer for student directory, including plural / singular total count.
@@ -87,6 +95,6 @@ end
 
 # calls the methods for evaluation
 students = input_students
-print_header
+print_header(students)
 print_students(students)
 print_footer(students)
