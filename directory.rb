@@ -4,7 +4,7 @@
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -36,14 +36,14 @@ end
 # Collects student details from user
 def input_students
   puts "Please enter the first and last name of the student"
-  name = gets.gsub(/\n/,"")
+  name = STDIN.gets.gsub(/\n/,"")
 
 # As long as name has been completed, do the following...
   while !name.empty? do
 
 # Collects the student's cohort
     puts "Which cohort is #{name} on?"
-    cohort = gets.chomp.to_sym
+    cohort = STDIN.gets.chomp.to_sym
 
 # Shovels collected student data into array of hashes
     @students << {name: name.capitalize, cohort: cohort}
@@ -57,7 +57,7 @@ def input_students
 
 # Prompts user to enter student's details. Recursive call back to the method if user populates name.
     puts "Enter another student, or hit return to finish"
-    name = gets.chomp
+    name = STDIN.gets.chomp
   end
 end
 
@@ -79,13 +79,25 @@ def save_students
   file.close
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
     @students << {name: name, cohort: cohort.to_sym}
   end
   file.close
+end
+
+def try_load_students
+  filename = ARGV.first # first argument from the command line
+  return if filename.nil? # get out of the method if it isn't given
+  if File.exists?(filename) # if it exists
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else # if it doesn't exists
+    puts "Sorry, #{filename} doesn't exist."
+    exit # quit the program
+  end
 end
 
 # Prints header for list of students, only if student list is not empty
@@ -115,5 +127,6 @@ def print_footer
 end
 
 
-# calls the methods for evaluation
+# calls the launch methods for evaluation
+try_load_students
 interactive_menu
