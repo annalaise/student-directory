@@ -1,4 +1,5 @@
 # Reference for input_students method
+@students = []
 COHORT_MONTH = [:january, :february, :march, :april, :may, :june, :july, :august, :september, :october, :november, :december]
 
 # Center formatting
@@ -9,24 +10,19 @@ end
 
 # Provides users with selection of choices for program to execute
 def interactive_menu
-  students = []
   loop do
     # 1. print the menu and ask the user what to do
-    puts "1. Enter new student details"
-    puts "2. Display existing student details"
-    puts "9. Exit"
+    print_menu
     # 2. read the input and save it into a variable
     selection = gets.chomp
     # 3. do what the user has asked
     case selection
       when "1"
         # input the students
-        students = input_students
+        @students = input_students
       when "2"
        # display the students
-       print_header(students)
-       print_students(students)
-       print_footer(students)
+       show_menu
      when "9"
        exit # this will terminate the program
      else
@@ -35,10 +31,21 @@ def interactive_menu
   end
 end
 
+def print_menu
+  puts "1. Enter new student details"
+  puts "2. Display existing student details"
+  puts "9. Exit"
+end
+
+def show_menu
+  print_header
+  print_students
+  print_footer
+end
+
 # Collects student details from user
 def input_students
   puts "Please enter the first and last name of the student"
-  students = []
   name = gets.gsub(/\n/,"")
   cohort = nil
 
@@ -65,25 +72,25 @@ def input_students
     age = gets.chomp
 
 # Shovels collected student data into array of hashes
-    students << {name: name.capitalize, cohort: cohort.capitalize, country: country.capitalize, age: age}
+    @students << {name: name.capitalize, cohort: cohort.capitalize, country: country.capitalize, age: age}
 
 # Puts count of students currently in database, with correct plural / singular terminology
-    if students.count > 1
-      center_puts("Now we have #{students.count} students")
+    if @students.count > 1
+      center_puts("Now we have #{@students.count} students")
     else
-      center_puts("Now we have #{students.count} student")
+      center_puts("Now we have #{@students.count} student")
     end
 
 # Prompts user to enter student's details. Recursive call back to the method if user populates name.
     center_puts("Enter another student, or hit return to finish")
     name = gets.chomp
   end
-  students
+  @students
 end
 
 # Prints header for list of students, only if student list is not empty
-def print_header(students)
-  if students.count > 0
+def print_header
+  if @students.count > 0
     center_puts("The students of Villains Academy")
     center_puts("-------------")
   else
@@ -92,9 +99,9 @@ def print_header(students)
 end
 
 # Sorts students by cohort (alphabetically by month), puts the resulting modified array of hashes, only if student list is not empty
-def print_students(students)
-  if students.count > 0
-    cohorts = students.sort_by! {|student| student[:cohort] }
+def print_students
+  if @students.count > 0
+    cohorts = @students.sort_by! {|student| student[:cohort] }
     puts cohorts
   else
     exit
@@ -102,11 +109,11 @@ def print_students(students)
 end
 
 # prints the footer for student directory, including plural / singular total count.
-def print_footer(students)
-  if students.count > 1
-  center_puts("Overall, we have #{students.count} great students")
+def print_footer
+  if @students.count > 1
+  center_puts("Overall, we have #{@students.count} great students")
   else
-    center_puts("Overall, we have #{students.count} great student")
+    center_puts("Overall, we have #{@students.count} great student")
   end
 end
 
