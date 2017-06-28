@@ -83,7 +83,7 @@ def add_students(name, cohort)
   @students << {name: name, cohort: cohort.to_sym}
 end
 
-def load_students(filename = "students.csv")
+def load_students(filename)
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
@@ -94,9 +94,10 @@ end
 
 def try_load_students
   filename = ARGV.first # first argument from the command line
+  filename ||= "students.csv"
   return if filename.nil? # get out of the method if it isn't given
   if File.exists?(filename) # if it exists
-    load_students(filename)
+    load_students(filename) # passes filename as an arg to load_students
     puts "Loaded #{@students.count} from #{filename}"
   else # if it doesn't exists
     puts "Sorry, #{filename} doesn't exist."
