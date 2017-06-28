@@ -79,24 +79,24 @@ def save_students
 end
 
 def save_to_existing_file
-  file = File.open("students.csv", "w")
-  @students.each do |student|
+  open("students.csv", "w") do |f|
+    @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
-    file.puts csv_line
+    f.puts csv_line
+    end
   end
-  file.close
   puts "Succesfully saved the list to the file"
 end
 
 def save_to_new_file(newfile_save)
-  file = File.open(newfile_save, "w")
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+  open(newfile_save, "w") do |f|
+      @students.each do |student|
+        student_data = [student[:name], student[:cohort]]
+        csv_line = student_data.join(",")
+        f.puts csv_line
+      end
   end
-  file.close
   puts "Succesfully saved the list to #{newfile_save}"
 end
 
@@ -118,22 +118,22 @@ def load_students
 end
 
 def load_from_existing(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    add_students(name, cohort)
+  open(filename, "r") do |f|
+    f.readlines.each do |line|
+      name, cohort = line.chomp.split(',')
+      add_students(name, cohort)
+    end
   end
-  file.close
   puts "Succesfully loaded #{@students.count} student records from #{filename}"
 end
 
 def load_from_new(newfile_load)
-  file = File.open(newfile_load, "r")
-  file.readlines.each do |line|
+  open(newfile_load, "r") do |f|
+    f.readlines.each do |line|
     name, cohort = line.chomp.split(',')
     add_students(name, cohort)
+    end
   end
-  file.close
   puts "Succesfully loaded student data from #{newfile_load}"
 end
 
