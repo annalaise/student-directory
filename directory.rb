@@ -70,19 +70,21 @@ def save_students
     file.puts csv_line
   end
   file.close
+  puts "Succesfully saved the list to the file"
 end
 
 def add_students(name, cohort)
   @students << {name: name, cohort: cohort.to_sym}
 end
 
-def load_students(filename)
+def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
     add_students(name, cohort)
   end
   file.close
+  puts "Succesfully loaded student data. To display them, select option 2"
 end
 
 def start_load_students
@@ -122,7 +124,7 @@ def print_footer
     puts " " # Adding additional line for formatting to terminal
   else
     puts "Overall, we have #{@students.count} great student"
-    puts " " # Adding additional line for formatting to terminal 
+    puts " " # Adding additional line for formatting to terminal
   end
 end
 
