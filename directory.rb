@@ -1,3 +1,4 @@
+require 'csv'
 @students = []
 
 # Provides users with selection of choices for program to execute
@@ -79,22 +80,18 @@ def save_students
 end
 
 def save_to_existing_file
-  open("students.csv", "w") do |f|
+  CSV.open("students.csv", "w") do |csv|
     @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    f.puts csv_line
+    csv << [student[:name], student[:cohort]]
     end
   end
   puts "Succesfully saved the list to the file"
 end
 
 def save_to_new_file(newfile_save)
-  open(newfile_save, "w") do |f|
+  CSV.open(newfile_save, "w") do |csv|
       @students.each do |student|
-        student_data = [student[:name], student[:cohort]]
-        csv_line = student_data.join(",")
-        f.puts csv_line
+      csv << [student[:name], student[:cohort]]
       end
   end
   puts "Succesfully saved the list to #{newfile_save}"
@@ -118,21 +115,17 @@ def load_students
 end
 
 def load_from_existing(filename = "students.csv")
-  open(filename, "r") do |f|
-    f.readlines.each do |line|
-      name, cohort = line.chomp.split(',')
-      add_students(name, cohort)
-    end
+  CSV.foreach(filename) do |row|
+  name, cohort = row
+  add_students(name, cohort)
   end
   puts "Succesfully loaded #{@students.count} student records from #{filename}"
 end
 
 def load_from_new(newfile_load)
-  open(newfile_load, "r") do |f|
-    f.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    add_students(name, cohort)
-    end
+  CSV.foreach(newfile_load) do |row|
+  name, cohort = row
+  add_students(name, cohort)
   end
   puts "Succesfully loaded student data from #{newfile_load}"
 end
