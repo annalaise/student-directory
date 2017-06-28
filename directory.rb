@@ -29,17 +29,14 @@ def print_menu
   puts "Please select one of the following options:"
   puts "1. Enter new student details"
   puts "2. Display existing student details"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the list to a csv file"
+  puts "4. Load the list from a csv file"
   puts "9. Exit"
 end
 
-# Collects student details from user
 def input_students
   puts "Please enter the first and last name of the student"
   name = STDIN.gets.chomp
-
-# As long as name has been completed, do the following...
   while !name.empty? do
     puts "Which cohort is #{name} on?"
     cohort = STDIN.gets.chomp.to_sym
@@ -54,6 +51,10 @@ def input_students
   end
 end
 
+def add_students(name, cohort)
+  @students << {name: name, cohort: cohort.to_sym}
+end
+
 def show_students
   print_header
   print_student_list
@@ -61,9 +62,24 @@ def show_students
 end
 
 def save_students
-  # open the file for writing
+  puts "Please choose one of the following options"
+  puts "1. Save the data to the existing file, students.csv"
+  puts "2. Save the data to a csv file of your choice"
+  choice_save = gets.chomp
+  case choice_save
+    when "1"
+      save_to_existing_file
+    when "2"
+      puts "Please enter a csv filename"
+      newfile_save = gets.chomp.to_s
+      save_to_new_file(newfile_save)
+    else
+     puts "I don't know what you mean, please try again"
+   end
+end
+
+def save_to_existing_file
   file = File.open("students.csv", "w")
-  # iterate over the array of students
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
@@ -73,18 +89,52 @@ def save_students
   puts "Succesfully saved the list to the file"
 end
 
-def add_students(name, cohort)
-  @students << {name: name, cohort: cohort.to_sym}
+def save_to_new_file(newfile_save)
+  file = File.open(newfile_save, "w")
+  @students.each do |student|
+    student_data = [student[:name], student[:cohort]]
+    csv_line = student_data.join(",")
+    file.puts csv_line
+  end
+  file.close
+  puts "Succesfully saved the list to #{newfile_save}"
 end
 
-def load_students(filename = "students.csv")
+def load_students
+  puts "Please choose one of the following options"
+  puts "1. Load the data from the existing file, students.csv"
+  puts "2. Load the data from a csv file of your choice"
+  choice_load = gets.chomp
+  case choice_load
+  when "1"
+    load_from_existing
+  when "2"
+    puts "Please enter a csv filename"
+    newfile_load = gets.chomp.to_s
+    load_from_new(newfile_load)
+  else
+   puts "I don't know what you mean, please try again"
+ end
+end
+
+def load_from_existing(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
     add_students(name, cohort)
   end
   file.close
-  puts "Succesfully loaded student data. To display them, select option 2"
+  puts "Succesfully loaded #{@students.count} student records from #{filename}"
+end
+
+def load_from_new(newfile_load)
+  file = File.open(newfile_load, "r")
+  file.readlines.each do |line|
+    name, cohort = line.chomp.split(',')
+    add_students(name, cohort)
+  end
+  file.close
+  puts "Succesfully loaded student data from #{newfile_load}"
 end
 
 def start_load_students
@@ -92,8 +142,7 @@ def start_load_students
   filename ||= "students.csv"
   return if filename.nil? # get out of the method if it isn't given
   if File.exists?(filename) # if it exists
-    load_students(filename) # passes filename as an arg to load_students
-    puts "Loaded #{@students.count} from #{filename}"
+    load_from_existing(filename) # passes filename as an arg to load_students
   else # if it doesn't exists
     puts "Sorry, #{filename} doesn't exist."
     exit # quit the program
