@@ -26,6 +26,7 @@ def process(selection)
 end
 
 def print_menu
+  puts "Please select one of the following options:"
   puts "1. Enter new student details"
   puts "2. Display existing student details"
   puts "3. Save the list to students.csv"
@@ -36,26 +37,18 @@ end
 # Collects student details from user
 def input_students
   puts "Please enter the first and last name of the student"
-  name = STDIN.gets.gsub(/\n/,"")
+  name = STDIN.gets.chomp
 
 # As long as name has been completed, do the following...
   while !name.empty? do
-
-# Collects the student's cohort
     puts "Which cohort is #{name} on?"
     cohort = STDIN.gets.chomp.to_sym
-
-# Shovels collected student data into array of hashes
     add_students(name, cohort)
-
-# Puts count of students currently in database, with correct plural / singular terminology
     if @students.count > 1
       puts "Now we have #{@students.count} students"
     else
       puts "Now we have #{@students.count} student"
     end
-
-# Prompts user to enter student's details. Recursive call back to the method if user populates name.
     puts "Enter another student, or hit return to finish"
     name = STDIN.gets.chomp
   end
@@ -92,7 +85,7 @@ def load_students(filename)
   file.close
 end
 
-def try_load_students
+def start_load_students
   filename = ARGV.first # first argument from the command line
   filename ||= "students.csv"
   return if filename.nil? # get out of the method if it isn't given
@@ -126,12 +119,14 @@ end
 def print_footer
   if @students.count > 1
     puts "Overall, we have #{@students.count} great students"
+    puts " " # Adding additional line for formatting to terminal
   else
     puts "Overall, we have #{@students.count} great student"
+    puts " " # Adding additional line for formatting to terminal 
   end
 end
 
 
 # calls the launch methods for evaluation
-try_load_students
+start_load_students
 interactive_menu
